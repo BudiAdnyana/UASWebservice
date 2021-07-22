@@ -114,7 +114,36 @@ class TicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //update data
+        $data = Ticket::where('id', $id)->first();
+
+        if(empty($data)){
+            return response()->json([
+                'pesan' => 'Data tidak ditemukan',
+                'data' => ''
+            ], 404);
+        }else{
+            $validasi = Validator::make($request->all(),[
+                "kelas"     => "required", 
+                "sub_kelas" => "required", 
+                "harga"     => "required|integer", 
+                "berlaku"   => "required", 
+                "desc"      => "required"
+            ]);
+ 
+            if($validasi->passes()){
+                $data->update($request->all());
+                return response()->json([
+                    'pesan' => 'Data disimpan',
+                    'data' => $data->update($request->all())
+                ]);
+            }else{
+                return response()->json([
+                    'pesan' => 'Data gagal di-update',
+                    'data' => $validasi->errors()->all()
+                ], 404);
+            }
+        }
     }
 
     /**

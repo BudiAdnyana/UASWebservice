@@ -26,16 +26,20 @@ Route::get('maskapai/{id}', 'API\AirlineController@show');
 Route::post('maskapai', 'API\AirlineController@store');
 //hapus data sesuai id
 Route::delete('maskapai/{id}', 'API\AirlineController@destroy');
+//update data
+Route::patch('maskapai/{id}', 'API\AirlineController@update');
 
 //Ticket
 //tampil semua data
 Route::get('tiket', 'API\TicketController@index');
 //tampil 1 data sesuai id
-Route::get('tiket/{id}', 'API\TicketController@show');
+Route::get('tiket/{id}', 'API\TicketController@show')->middleware('auth:api');
 //tambah data
 Route::post('tiket', 'API\TicketController@store');
 //hapus data sesuai id
 Route::delete('tiket/{id}', 'API\TicketController@destroy');
+//update data
+Route::patch('tiket/{id}', 'API\TicketController@update');
 
 //Password
 Route::get('password', function(){

@@ -115,7 +115,36 @@ class AirlineController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //update data
+        $data = Airline::where('id', $id)->first();
+
+        if(empty($data)){
+            return response()->json([
+                'pesan' => 'Data tidak ditemukan',
+                'data' => ''
+            ], 404);
+        }else{
+            $validasi = Validator::make($request->all(),[
+                "nama"      => "required",
+                "alamat"    => "required",
+                "no_tlpn"   => "required|integer", 
+                "e-mail"    => "required", 
+                "ticket_id" => "required|integer"
+            ]);
+
+            if($validasi->passes()){
+                $data->update($request->all());
+                return response()->json([
+                    'pesan' => 'Data disimpan',
+                    'data' => $data->update($request->all())
+                ]);
+            }else{
+                return response()->json([
+                    'pesan' => 'Data gagal di-update',
+                    'data' => $validasi->errors()->all()
+                ], 404);
+            }
+        }
     }
 
     /**
